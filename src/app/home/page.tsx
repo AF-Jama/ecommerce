@@ -24,7 +24,7 @@ const Page:React.FC = ()=>{
 
 
     return (
-        <h1 className="text-red-500">AUTH</h1>
+        <h1 className="text-red-500">AUTH PAGE</h1>
     )
 }
 
