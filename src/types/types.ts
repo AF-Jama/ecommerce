@@ -4,6 +4,11 @@ interface SignUpFormInputs{
     password:string,
 }
 
+interface LoginFormInputs{
+    email:string,
+    password:string
+}
+
 interface LoginBody{
     email:string,
     password:string,
@@ -19,5 +24,6 @@ interface SignUpResponse{
 export type {
     SignUpFormInputs,
     LoginBody,
-    SignUpResponse
+    SignUpResponse,
+    LoginFormInputs
 }

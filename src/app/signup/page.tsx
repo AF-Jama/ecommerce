@@ -1,17 +1,36 @@
 import React from "react"
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
+import { cookies } from 'next/headers'; // Import cookies
 import Logo  from '../../assets/images/logo.svg';
 import googleLogo from '../../assets/images/google-auth-logo.svg';
 import twitterLogo from '../../assets/images/twitter-auth-logo.svg';
 import authLogo from '../../assets/images/apple-auth-logo.svg';
 import Header from "@/Components/Header/Header";
+import * as jwt from 'jsonwebtoken';
 import SignUpForm from "@/Components/SignUpForm/SignUpForm";
 
+interface Props{
+    req:NextRequest
+}
 
-const Page:React.FC = async ()=>{
+const Page:React.FC<Props> = async ({req})=>{
 
+    const nextCookies = cookies(); // Get cookies object
 
+    const token = nextCookies.get('AT') // Find cookie
 
+    const tokenValue = token?.value as string;
+
+    const secret = process.env.JWT_SECRET_KEY as string;
+
+    jwt.verify(tokenValue, secret, function(err, decoded) {
+        if(decoded){
+            redirect("/home");
+        }
+    });
+  
 
     return (  
 
@@ -24,6 +43,7 @@ const Page:React.FC = async ()=>{
                 <p className="text-sm text-gray-700">Privacy</p>
                 <p className="text-sm text-gray-700">Legal</p>
                 <p className="text-sm text-gray-700">Worldwide</p>
+                {/* <p className="text-red-500">{token?.value}</p> */}
             </div>
         </div>
     )

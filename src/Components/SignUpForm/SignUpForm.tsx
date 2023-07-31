@@ -58,7 +58,7 @@ const SignUpForm: React.FC = ()=>{
             let result:SignUpResponse = await res.json(); // returns signup response
 
             if(result.statusCode===201){
-                return router.push('/');
+                return router.push('/home');
             }
 
             if(result.statusCode===400){
@@ -71,7 +71,7 @@ const SignUpForm: React.FC = ()=>{
             setLoading(false);
         }
 
-     }
+    }
 
       useEffect(()=>{
         if(loginMessage){

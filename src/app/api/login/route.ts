@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client';
+import { cookies } from "next/headers";
+import * as jwt from 'jsonwebtoken';
 import { LoginBody } from "@/types/types";
+import { LoginSchema } from "@/utils/utils";
 import client from "../../../../redis/client";
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
@@ -22,38 +25,42 @@ export async function GET(request:NextRequest,response:NextResponse){
 export async function POST(request:NextRequest){
     const body: LoginBody = await request.json();
 
-    const { email, name, password } = body; // destructures body object
-
-    const salt = await bcrypt.genSalt(10); // generates unique salt
-
-    const bcryptHash = await bcrypt.hash(password,salt); // generates password hash
+    const { email, password } = body; // destructures body object
 
     try{
+        const schemaResult = LoginSchema.safeParse({
+            email:email,
+            password:password
+        })
 
-        const res = new NextResponse("Updated token!");
+        if(!schemaResult.success) throw new Error("Payload cannot be validated or is not valid");
 
-        const user = await prisma.user.create({
-            data:{
-                email:email,
-                name:name,
-                passwd:bcryptHash,
-                salt:salt
+        const user = await prisma.user.findUniqueOrThrow({
+            where:{
+                email:email
             }
         })
 
-        const sessionId = uuidv4(); // returns session id
+        const secret = process.env.JWT_SECRET_KEY as string;
 
-        res.cookies.set({
-            name:"test",
-            value:"1",
-            httpOnly:true,
-        });
+        const token = jwt.sign({
+            userId: user.id,
+            email:user.email,
+            name:user.name
+          }, secret, { expiresIn: 7 * 24*60*60 }); // generates access token with payload
+          
+        cookies().set({
+            name: 'AT',
+            value: token,
+            httpOnly: true,
+            path: '/',
+            maxAge:7 * 24*60*60
+        })
 
-        await client.set(`user-session:${sessionId}`,user.id); // set user session- redis cache
-
-        // redirect('/');
-
-        return new Response("SUCCESFUL");
+        return new Response(JSON.stringify({
+            message:"Succesfully logs in",
+            statusCode:201
+        }));
     }catch(error){
         console.log(error);
         return new Response(JSON.stringify({

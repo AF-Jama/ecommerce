@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client';
 import type { LoginBody } from "@/types/types";
 import client from "../../../../redis/client";
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
+import * as jwt from 'jsonwebtoken';
 import { userSignUpSchema } from "@/utils/utils";
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +13,8 @@ import { ZodError } from "zod";
 const prisma = new PrismaClient();
 
 export async function GET(request:NextRequest,response:NextResponse){
+
+    console.log(process.env.JWT_SECRET_KEY)
 
     return new Response(JSON.stringify({
         test:"SUCCESFUL",
@@ -48,16 +51,20 @@ export async function POST(request:NextRequest,res:NextResponse){
             }
         })
 
+        const secret = process.env.JWT_SECRET_KEY as string;
 
-        await client.set(`user-session:${sessionId}`,user.id,{
-            EX:7*24*60*60
-        }); // set user session- redis cache
+        const token = jwt.sign({
+            userId: user.id,
+            email:user.email,
+            name:user.name
+          }, secret, { expiresIn: 7 * 24*60*60 }); // generates access token with payload
 
         cookies().set({
-            name: 'sid',
-            value: sessionId,
+            name: 'AT',
+            value: token,
             httpOnly: true,
             path: '/',
+            maxAge:7 * 24*60*60
         })
 
         return new Response(JSON.stringify({
