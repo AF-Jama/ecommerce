@@ -12,9 +12,14 @@ const LoginSchema = z.object({
     password:z.string().regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/),
 })
 
+function capitalizeFirstLetter(string:string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export type userSignUp = z.infer<typeof userSignUpSchema>
 export type LoginType  = z.infer<typeof LoginSchema>
 export {
     userSignUpSchema,
-    LoginSchema
+    LoginSchema,
+    capitalizeFirstLetter
 }

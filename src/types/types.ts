@@ -20,10 +20,20 @@ interface SignUpResponse{
     statusCode:number
 }
 
+interface Product{
+    id:number,
+    title:string,
+    price:number,
+    category:string,
+    description:string,
+    image:string
+}
+
 
 export type {
     SignUpFormInputs,
     LoginBody,
     SignUpResponse,
-    LoginFormInputs
+    LoginFormInputs,
+    Product
 }

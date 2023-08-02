@@ -27,7 +27,7 @@ const Page:React.FC<Props> = async ({req})=>{
 
     jwt.verify(tokenValue, secret, function(err, decoded) {
         if(decoded){
-            redirect("/home");
+            redirect("/store/home");
         }
     });
   

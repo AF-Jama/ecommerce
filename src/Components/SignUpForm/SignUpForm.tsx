@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SignUpFormInputs, SignUpResponse } from "@/types/types";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -58,7 +59,7 @@ const SignUpForm: React.FC = ()=>{
             let result:SignUpResponse = await res.json(); // returns signup response
 
             if(result.statusCode===201){
-                return router.push('/home');
+                return router.push('/store/home');
             }
 
             if(result.statusCode===400){
@@ -89,6 +90,7 @@ const SignUpForm: React.FC = ()=>{
 
         <div id="form-container" className="w-[95%] max-w-sm mx-auto">
                 <Image src={Logo} className="my-4 mx-auto w-12 h-12" alt=""/>
+                <h1 className="text-center text-lg font-bold">Sign Up</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="max-w-sm mx-auto my-2">
                         <input type="text" className="w-full p-2 rounded-md border" placeholder="Email Address" {...register("email",{
@@ -126,7 +128,7 @@ const SignUpForm: React.FC = ()=>{
                         </InputGroup>
                         {errors.password && <p className="text-red-600 text-sm">Valid Password Required</p>}
                     </div>
-                    <input type="submit" className="w-full bg-[#142c8e] p-2 text-white rounded-xl"/>  
+                    <input type="submit" className="w-full bg-[#142c8e] p-2 text-white rounded-xl" value="Sign Up"/>  
                     {/* {loading?<Button isLoading colorScheme='teal' variant='solid' className="bg-[#142c8e] w-full"/>:<Button colorScheme='teal' variant='solid' className="bg-[#142c8e] w-full">Sign In</Button>} */}
                     <p className="text-red-500 mt-2 px-1">{loginMessage}</p>
                 </form>
@@ -145,6 +147,7 @@ const SignUpForm: React.FC = ()=>{
                     <Image src={authLogo} className="h-8 w-8" alt=""/>
                     <p>Sign in using Apple</p>
                 </div>
+                <Link href={`/login`} className="block text-center mt-1 font-bold">Login Here</Link>
         </div>
     )
 }

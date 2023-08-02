@@ -1,0 +1,29 @@
+.container>div{
+    transition: 0.4s;   
+}
+
+.bar{
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+}
+
+.container>div:nth-child(2){
+}
+
+.change>div{
+    transition: 0.4s;
+}
+
+.change>div:first-child{
+    transform: translate(0, 11px) rotate(-45deg);
+}
+
+.change>div:nth-child(2){
+    opacity: 0;
+}
+
+.change>div:nth-child(3) {
+    transform: translate(0, -11px) rotate(45deg);
+}

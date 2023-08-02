@@ -6,6 +6,15 @@ import { Inter } from 'next/font/google'
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from "next-auth/react"
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+
+const queryClient = new QueryClient()
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +34,9 @@ export default function RootLayout({
         <CacheProvider>
           <ChakraProvider>
             <SessionProvider>
+              <QueryClientProvider client={queryClient}>
               {children}
+              </QueryClientProvider>
             </SessionProvider>
           </ChakraProvider>
         </CacheProvider>

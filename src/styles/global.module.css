@@ -1,0 +1,12 @@
+.homeHero{
+    background-image: url('../assets/images/glare.png');
+    object-fit: cover;
+}
+
+.catImage{
+    object-fit: cover;
+}
+
+.productImage{
+    object-fit: contain;
+}

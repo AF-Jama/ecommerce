@@ -17,7 +17,7 @@ const Page:React.FC = ()=>{
 
     jwt.verify(tokenValue, secret, function(err, decoded) {
         if(decoded){
-            redirect("/home");
+            redirect("/store/home");
         }
     });
 
