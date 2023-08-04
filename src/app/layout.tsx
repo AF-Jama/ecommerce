@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from "next-auth/react"
+import CartContextProvider from '@/Contexts/CartContext/CartContextProvider';
 import {
   useQuery,
   useMutation,
@@ -35,7 +36,9 @@ export default function RootLayout({
           <ChakraProvider>
             <SessionProvider>
               <QueryClientProvider client={queryClient}>
-              {children}
+                <CartContextProvider>
+                  {children}
+                </CartContextProvider>
               </QueryClientProvider>
             </SessionProvider>
           </ChakraProvider>

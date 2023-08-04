@@ -10,3 +10,35 @@
 .productImage{
     object-fit: contain;
 }
+
+.btnCart::after{
+    content: url('../assets/images/btn-cart.png');
+    margin: 0 0.5rem;
+    vertical-align: middle;
+}
+
+.addItemHide{
+    transform: translateY(-50px);
+    transition: transform ease-in 0.5s;
+}
+
+.addItemShow{
+    transform: translateY(0);
+    transition: transform ease-in 0.5s;
+}
+
+.addItem::before{
+    content: url('../assets/images/check-mark.png');
+    vertical-align: middle;
+    margin: 0 0.8rem;
+}
+
+.cartItemsNumber{
+    position: absolute;
+    right: -10px;
+    bottom: -3px;
+}
+
+/* .removeBtn{
+    border-radius: 65%;
+} */

@@ -60,7 +60,7 @@ const Page:React.FC<Props> = async ({ params }:{ params:{ slug:string }})=>{
             <div id="product-container" className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4">
                 {data.length===0 && <p className={`${urbanist.className} text-lg`}>No Products in this category</p>}
                 {data.map(product=>(
-                    <Link href={`/store/category/${params.slug}/${product.id}`}>
+                    <Link href={`/store/product/${product.id}`}>
                         <div id="product-container" className="p-2 border rounded-md hover:opacity-80">
                             <div id="img-container" className="h-48 md:h-60">
                                 <Image src={product.image} className={`w-full h-full ${styles.productImage}`} width={500} height={500} alt=""/>

@@ -3,6 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Header from "@/Components/Header/Header";
+import AddItem from "@/Components/AddItem/AddItem";
 
 
 export default async function StoreLayout({
@@ -33,6 +34,8 @@ export default async function StoreLayout({
             <main className="w-[95%] max-w-6xl mx-auto">
                 {children}
             </main>
+
+            <AddItem/>
         </>   
     )
 }
