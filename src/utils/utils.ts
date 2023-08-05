@@ -1,5 +1,6 @@
 import { z } from "zod";
-
+import { NextRequest, NextResponse } from "next/server";
+import { Product } from "@/types/types";
 
 const userSignUpSchema = z.object({
     name:z.string().min(4,"Name is required"),
@@ -16,10 +17,20 @@ function capitalizeFirstLetter(string:string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// export function getTokenData(request:NextRequest){
+
+
+// }
+
+const checkCartItems = (item:Product,cartItems:Product[])=>{
+    return cartItems.some(el=>el.id===item.id);
+}
+
 export type userSignUp = z.infer<typeof userSignUpSchema>
 export type LoginType  = z.infer<typeof LoginSchema>
 export {
     userSignUpSchema,
     LoginSchema,
-    capitalizeFirstLetter
+    capitalizeFirstLetter,
+    checkCartItems
 }

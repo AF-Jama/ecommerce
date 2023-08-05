@@ -1,14 +1,14 @@
-import { createClient } from 'redis';
+// import { createClient } from 'redis';
 
-const client = createClient();
+// const client = createClient();
 
-(async () => {
-    await client.connect();
-  })();
+// (async () => {
+//     await client.connect();
+//   })();
 
-client.on('error', err => console.log('Redis Client Error', err));
-client.on('connect', ()=>console.log('connected to redis'))
+// client.on('error', err => console.log('Redis Client Error', err));
+// client.on('connect', ()=>console.log('connected to redis'))
 
 
 
-export default client;
+// export default client;

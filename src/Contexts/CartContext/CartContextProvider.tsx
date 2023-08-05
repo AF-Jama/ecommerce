@@ -6,6 +6,7 @@ import cartContext from "./CartContext";
 
 const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
     const [addState, setAddState] = useState(false); // set add state 
+    const [errorState,setErrorState] = useState(false); // set error state
     
 
 
@@ -15,7 +16,13 @@ const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
                 setAddState(false);
             },3000)
         }
-    },[addState]);
+
+        if(errorState){
+            setTimeout(()=>{
+                setErrorState(false);
+            },3000)
+        }
+    },[addState,errorState]);
 
 
 
@@ -24,7 +31,9 @@ const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
     return (
         <cartContext.Provider value={{
             addState:addState,
-            setAddCartState:setAddState
+            setAddCartState:setAddState,
+            errorState:errorState,
+            setErrorState:setErrorState
         }}>
             {children}
         </cartContext.Provider>

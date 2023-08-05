@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Header from "@/Components/Header/Header";
 import AddItem from "@/Components/AddItem/AddItem";
+import ErrorItem from "@/Components/ErrorItem/ErrorItem";
 
 
 export default async function StoreLayout({
@@ -12,19 +13,19 @@ export default async function StoreLayout({
     children: React.ReactNode
 }){
 
-    const nextCookies = cookies(); // Get cookies object
+    // const nextCookies = cookies(); // Get cookies object
 
-    const token = nextCookies.get('AT'); // Find cookie
+    // const token = nextCookies.get('AT'); // Find cookie
 
-    const tokenValue = token?.value as string;
+    // const tokenValue = token?.value as string;
 
-    const secret = process.env.JWT_SECRET_KEY as string;
+    // const secret = process.env.JWT_SECRET_KEY as string;
 
-    jwt.verify(tokenValue, secret, function(err, decoded) {
-        if(err){
-            redirect("/login");
-        }
-    });
+    // jwt.verify(tokenValue, secret, function(err, decoded) {
+    //     if(err){
+    //         redirect("/login");
+    //     }
+    // });
 
 
     return (
@@ -36,6 +37,7 @@ export default async function StoreLayout({
             </main>
 
             <AddItem/>
+            <ErrorItem message="Product already in cart"/>
         </>   
     )
 }

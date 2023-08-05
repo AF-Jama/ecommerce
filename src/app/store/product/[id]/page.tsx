@@ -69,7 +69,7 @@ const Page:React.FC<Props> = async ({ params }: { params: { id:string } })=>{
                     <p className={`font-bold ${inter.className}`}>Category: <span className={`font-normal ${inter.className}`}>{capitalizeFirstLetter(data.category)}</span></p>
 
                     <div id="cart-btn">
-                        <CartButton productId={data.id}/>
+                        <CartButton productData={data}/>
                     </div>
                 </div>
             </div>

@@ -5,18 +5,18 @@ import { cookies } from "next/headers";
 import * as jwt from 'jsonwebtoken';
 import { LoginBody } from "@/types/types";
 import { LoginSchema } from "@/utils/utils";
-import client from "../../../../redis/client";
+// import client from "../../../../redis/client";
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 export async function GET(request:NextRequest,response:NextResponse){
-    const value = await client.get("test");
+    // const value = await client.get("test");
 
     return new Response(JSON.stringify({
         test:"SUCCESFUL",
-        value:value,
+        value:"value",
     }));
 }
 

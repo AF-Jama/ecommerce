@@ -30,9 +30,6 @@ model CartItems{
   itemId Int @id @default(autoincrement())
   cart Cart @relation(fields: [cartId],references: [cartId])
   cartId String @unique
-  category String
   productId Int
   qauntity Int
-  price Float
-  discount Float @default(0.00)
 }

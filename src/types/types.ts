@@ -29,11 +29,18 @@ interface Product{
     image:string
 }
 
+interface Token{
+    userId:string,
+    name:string,
+    email:string
+}
+
 
 export type {
     SignUpFormInputs,
     LoginBody,
     SignUpResponse,
     LoginFormInputs,
-    Product
+    Product,
+    Token
 }

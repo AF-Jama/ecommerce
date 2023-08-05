@@ -33,6 +33,22 @@
     margin: 0 0.8rem;
 }
 
+.errorItem::before{
+    content: url('../assets/images/red-x-mark.png');
+    vertical-align: middle;
+    margin: 0 0.8rem;
+}
+
+.errorItemHide{
+    transform: translateY(-50px);
+    transition: transform ease-in 0.5s;
+}
+
+.errorItemShow{
+    transform: translateY(0);
+    transition: transform ease-in 0.5s;
+}
+
 .cartItemsNumber{
     position: absolute;
     right: -10px;
