@@ -6,6 +6,7 @@ import { Product } from "@/types/types";
 import styles from '../../styles/global.module.css';
 import { Inter } from "next/font/google";
 import cartContext from "@/Contexts/CartContext/CartContext";
+import { getItemCountFromLocalStorage } from "@/utils/utils";
 import { checkCartItems } from "@/utils/utils";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,27 +27,26 @@ const CartButton:React.FC<Props> = ({ productData })=>{
 
     const AddToCart = (e:React.MouseEvent<HTMLButtonElement, MouseEvent> )=>{
         // add item to local storage
-        let cartItems = window.localStorage.getItem('cartItems'); // returns cart items if exists
+        const cartItem = getItemCountFromLocalStorage();
 
-        if(!cartItems){
+        if(cartItem.length===0){
             window.localStorage.setItem("cartItems",JSON.stringify([productData]));
             setAddCartState(true);
             return;
+
         }
 
-        let cartItemss = JSON.parse(cartItems) as Array<Product>;
+        const isInCart = checkCartItems(productData,cartItem); // returns boolean value if product exists within cart
 
-        const isInCart = checkCartItems(productData,cartItemss);
-
-        if(isInCart){
-            console.log("ITEM EXISTS IN CART");
-            setErrorState(true);
+        if(!isInCart){
+            // triggered if product does not exists within cart
+            cartItem.push(productData); 
+            window.localStorage.setItem("cartItems",JSON.stringify(cartItem));
+            setAddCartState(true);
             return;
         }
-
-        cartItemss.push(productData);
-        window.localStorage.setItem("cartItems",JSON.stringify(cartItemss));
-        setAddCartState(true);
+        
+        setErrorState(true);
         return;
     }
 

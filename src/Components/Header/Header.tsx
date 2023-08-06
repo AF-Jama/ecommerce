@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import Link from "next/link";
 import { useContext } from "react";
@@ -10,13 +10,41 @@ import cart from '../../assets/images/cart.png';
 import Image from "next/image";
 import style from '../../styles/global.module.css';
 import styles from '../../styles/header.module.css';
+import { getItemCountFromLocalStorage } from "@/utils/utils";
+import { Product } from "@/types/types";
 
 const Header = ()=>{
     const [loginState,setLoginState] = useState(true); // set login state
     const [visibility,setVisibility] = useState(false);
     const { addState, setAddCartState } = useContext(cartContext);
+    const [cartItems,setCartItems] = useState<number>(0);
 
     console.log(visibility);
+
+    const handleStorageChange = (event: StorageEvent) => {
+        if (event.key === 'cartItems') {
+          if (!event.newValue) {
+            // If there is no new value, set cartItems to an empty array
+            setCartItems(0);
+            return;
+          }
+  
+          const cartItems: Product[] = JSON.parse(event.newValue);
+          setCartItems(cartItems.length);
+        }
+      };
+
+
+    useEffect(()=>{
+        
+        setCartItems(getItemCountFromLocalStorage().length);
+
+        window.addEventListener("storage",handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };  
+    },[])
 
 
     return (
@@ -38,7 +66,7 @@ const Header = ()=>{
                 <Link href={`/store/cart`}>
                     <div id="cart-container" className="flex relative p-3">
                         <Image src={cart} className="h-10 w-10 ml-2" alt=""/>
-                        <p className={`font-bold text-black mt-2 ${style.cartItemsNumber} py-1 px-2`}>122</p>
+                        <p className={`font-bold text-black mt-2 ${style.cartItemsNumber} py-1 px-2`}>{cartItems}</p>
                     </div>
                 </Link>
 

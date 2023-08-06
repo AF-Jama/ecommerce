@@ -51,7 +51,7 @@ const Page:React.FC<Props> = async ({ params }:{ params:{ slug:string }})=>{
         <>
             <div id="home-hero-container" className={`border-8 border-solid rounded-xl text-xl border-white text-center font-bold ${urbanist.className} ${styles.homeHero} aspect-square md:aspect-[2/1] md:text-2xl lg:text-3xl`}>
                 <div className="w-full h-full flex flex-col justify-center md:text-3xl">
-                    Explore Our Wide Range Of {capitalizeFirstLetter(params.slug)}
+                    Explore Our Wide Range Of {capitalizeFirstLetter(decodeURI(params.slug))}
                 </div>
             </div>
 

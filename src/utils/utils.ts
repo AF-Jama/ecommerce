@@ -26,11 +26,17 @@ const checkCartItems = (item:Product,cartItems:Product[])=>{
     return cartItems.some(el=>el.id===item.id);
 }
 
+const getItemCountFromLocalStorage = () => {
+    const items:Product[] = JSON.parse(window.localStorage.getItem('cartItems') || '[]'); // returns item from cart storage or empty array
+    return items;
+};
+
 export type userSignUp = z.infer<typeof userSignUpSchema>
 export type LoginType  = z.infer<typeof LoginSchema>
 export {
     userSignUpSchema,
     LoginSchema,
     capitalizeFirstLetter,
-    checkCartItems
+    checkCartItems,
+    getItemCountFromLocalStorage
 }
