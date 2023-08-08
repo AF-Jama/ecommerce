@@ -11,25 +11,23 @@ import Header from "@/Components/Header/Header";
 import * as jwt from 'jsonwebtoken';
 import SignUpForm from "@/Components/SignUpForm/SignUpForm";
 
-interface Props{
-    req:NextRequest
-}
+// interface Props{
+//     req:NextRequest
+// }
 
-const Page:React.FC<Props> = async ({req})=>{
+const Page:React.FC = async ()=>{
 
-    const nextCookies = cookies(); // Get cookies object
+    // const nextCookies = cookies(); // Get cookies object
 
-    const token = nextCookies.get('AT') // Find cookie
+    // const token = nextCookies.get('AT')?.value || "" // Find cookie
 
-    const tokenValue = token?.value as string;
+    // const secret = process.env.JWT_SECRET_KEY as string;
 
-    const secret = process.env.JWT_SECRET_KEY as string;
-
-    jwt.verify(tokenValue, secret, function(err, decoded) {
-        if(decoded){
-            redirect("/store/home");
-        }
-    });
+    // jwt.verify(token, secret, function(err, decoded) {
+    //     if(decoded){
+    //         redirect("/store/home");
+    //     }
+    // });
   
 
     return (  

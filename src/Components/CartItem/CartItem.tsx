@@ -40,7 +40,7 @@ const CartItem:React.FC<Product> = (product)=>{
 
         cartItem.splice(cartItemIndex,1);
 
-        console.log(cartItem);
+        // console.log(cartItem);
 
         window.localStorage.setItem("cartItems",JSON.stringify(cartItem));
 

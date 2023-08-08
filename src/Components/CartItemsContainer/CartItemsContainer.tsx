@@ -17,22 +17,21 @@ const roboto = Roboto({
 const CartItemsContainer = ()=>{
     const [cartItems,setCartItems] = useState<Product[]|null>(null);
 
-    const handleStorageChange = (event:StorageEvent)=>{
-        if(event.key==="cartItems"){
-            if(!event.newValue){
-                return;
-            };
-
-            const cartItems = JSON.parse(event.newValue) as Product[];
     
-            window.localStorage.setItem("cartItems",JSON.stringify(cartItems));
-
-            setCartItems(cartItems);
+    const handleStorageChange = (event:StorageEvent) => {
+        if (event.key === "cartItems") {
+            console.log("CART CHANGED");
+            if(!event.newValue){
+                setCartItems([]);
+                return;
+            }
+            const updatedCart = JSON.parse(event.newValue);
+            setCartItems(updatedCart);
         }
-    }
-
-
+    };
+    
     useEffect(()=>{
+        
 
         const cartItem = getItemCountFromLocalStorage(); // returns cart items if exists or empty array
 
@@ -47,7 +46,7 @@ const CartItemsContainer = ()=>{
         window.addEventListener("storage",handleStorageChange);
 
         return ()=> window.removeEventListener("storage",handleStorageChange);
-    },[]);
+    },[window.localStorage.getItem("cartItems")]);
 
 
 
@@ -60,7 +59,7 @@ const CartItemsContainer = ()=>{
                 cartItems &&
 
                 cartItems.map(item=>(
-                    <CartItem id={item.id} title={item.title} image={item.image} price={item.price} category={item.category} description={item.description} />
+                    <CartItem id={item.id} title={item.title} image={item.image} price={item.price} category={item.category} description={item.description} key={item.id} />
                     
                 ))
             }

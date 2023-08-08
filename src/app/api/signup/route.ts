@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client';
 import type { LoginBody } from "@/types/types";
-import client from "../../../../redis/client";
+// import client from "../../../../redis/client";
 import { cookies } from 'next/headers';
 import * as jwt from 'jsonwebtoken';
 import { userSignUpSchema } from "@/utils/utils";

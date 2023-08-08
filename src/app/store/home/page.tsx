@@ -76,7 +76,7 @@ const Page:React.FC = async ()=>{
             <div id="products-container" className="grid grid-cols-2 p-2 md:grid-cols-3 gap-2">
                 {
                     getCats.map(cat=>(
-                        <Link href={`/store/category/${cat}`}>
+                        <Link href={`/store/category/${cat}`} key={cat}>
                             <div className="relative">
                                 <div id="img-container" className="h-48 md:h-60">
                                     <Image src={store} className={`h-full w-full opacity-90 hover:opacity-50 hover:transition rounded-xl ${styles.catImage}`} alt=""/>

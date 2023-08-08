@@ -21,30 +21,29 @@ const Header = ()=>{
 
     console.log(visibility);
 
-    const handleStorageChange = (event: StorageEvent) => {
-        if (event.key === 'cartItems') {
-          if (!event.newValue) {
-            // If there is no new value, set cartItems to an empty array
-            setCartItems(0);
-            return;
-          }
-  
-          const cartItems: Product[] = JSON.parse(event.newValue);
-          setCartItems(cartItems.length);
-        }
-      };
-
-
+    
+    
     useEffect(()=>{
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === 'cartItems') {
+              if (!event.newValue) {
+                // If there is no new value, set cartItems to an empty array
+                setCartItems(0);
+                return;
+              }
+      
+              const cartItems: Product[] = JSON.parse(event.newValue);
+              setCartItems(cartItems.length);
+            }
+          };
+        
         
         setCartItems(getItemCountFromLocalStorage().length);
 
         window.addEventListener("storage",handleStorageChange);
 
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };  
-    },[])
+        return () => window.removeEventListener('storage', handleStorageChange);  
+    },[window.localStorage.getItem("cartItems")]);
 
 
     return (
@@ -66,7 +65,7 @@ const Header = ()=>{
                 <Link href={`/store/cart`}>
                     <div id="cart-container" className="flex relative p-3">
                         <Image src={cart} className="h-10 w-10 ml-2" alt=""/>
-                        <p className={`font-bold text-black mt-2 ${style.cartItemsNumber} py-1 px-2`}>{cartItems}</p>
+                        <p className={`font-bold text-black mt-2 ${style.cartItemsNumber} py-1 px-2`}>{(cartItems===0)?"":cartItems}</p>
                     </div>
                 </Link>
 

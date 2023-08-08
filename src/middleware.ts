@@ -10,44 +10,28 @@ export function middleware(request: NextRequest) {
 
     const isPublicPath = path==='/login' || path==='/signup'
 
-    console.log(isPublicPath);
-
     const accessToken = request.cookies.get('AT')?.value || ''; // returns access token if exists or returns empty string
 
-    console.log(accessToken.length);
-
     if(isPublicPath && accessToken){
-        console.log("NOT HIT");
+        // triggered if path is public and access token exists
+        return NextResponse.redirect(new URL('/store/home', request.url))
+    }
+
+    if(path==="/"){
         return NextResponse.redirect(new URL('/store/home', request.url))
     }
 
     if(path.startsWith('/api') && !accessToken){
+        // triggered if endpoint is starts with '/api' and no access token exists
         return NextResponse.json({
             message:"Access token is required",
             statusCode:401
         })
     }
 
-    // if(path.startsWith('/api') && accessToken){
-
-    //     const token = process.env.JWT_SECRET as string;
-
-    //     try{
-    //         let decoded = jwt.verify(accessToken,token) as Token;
-
-    //     }catch(error){
-
-    //     }
-
-    //     // return NextResponse.json({
-    //     //     message:"Access token is required",
-    //     //     statusCode:401
-    //     // })
-    // }
-
     if(!isPublicPath && !accessToken){
-        console.log('HIT');
-        return NextResponse.redirect(new URL('/login', request.url))
+        // triggered path is private (not public) and no access token
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 }
  
@@ -55,9 +39,10 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/login', // public (unauthenticated path)
-    '/signup', // public (unauthenticated path)
+    '/signup', // public (unauthenticated path),
+    '/',
     '/store/:path*', // private path,
     '/api/user/me',
-    '/api/cart/all'
+    '/api/cart/all',
   ]
 }

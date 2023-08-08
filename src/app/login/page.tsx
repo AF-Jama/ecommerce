@@ -7,19 +7,19 @@ import LoginForm from "@/Components/LoginForm/LoginForm";
 
 const Page:React.FC = ()=>{
 
-    const nextCookies = cookies(); // Get cookies object
+    // const nextCookies = cookies(); // Get cookies object
 
-    const token = nextCookies.get('AT'); // Find cookie
+    // const token = nextCookies.get('AT'); // Find cookie
 
-    const tokenValue = token?.value as string;
+    // const tokenValue = token?.value as string;
 
-    const secret = process.env.JWT_SECRET_KEY as string;
+    // const secret = process.env.JWT_SECRET_KEY as string;
 
-    jwt.verify(tokenValue, secret, function(err, decoded) {
-        if(decoded){
-            redirect("/store/home");
-        }
-    });
+    // jwt.verify(tokenValue, secret, function(err, decoded) {
+    //     if(decoded){
+    //         redirect("/store/home");
+    //     }
+    // });
 
 
     return (
