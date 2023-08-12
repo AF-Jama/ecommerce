@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Product } from "@/types/types";
 import { Roboto } from "next/font/google";
@@ -28,7 +28,7 @@ const CartItemsContainer = ()=>{
             const updatedCart = JSON.parse(event.newValue);
             setCartItems(updatedCart);
         }
-    };
+    }; // handle storage change on storage event listener trigger
     
     useEffect(()=>{
         
@@ -46,7 +46,7 @@ const CartItemsContainer = ()=>{
         window.addEventListener("storage",handleStorageChange);
 
         return ()=> window.removeEventListener("storage",handleStorageChange);
-    },[window.localStorage.getItem("cartItems")]);
+    },[]); // add dependency array (window.localStorage.getItem("cartItems"))
 
 
 

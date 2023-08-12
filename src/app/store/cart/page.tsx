@@ -31,7 +31,7 @@ const Page:React.FC = ()=>{
                     </div>
 
                     <div id="cart-total-container" className=" md:col-start-5 md:col-end-7">
-                        <OrderSummaryContainer/>
+                        <OrderSummaryContainer/>    
 
                     </div>
                 </div>

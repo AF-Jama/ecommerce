@@ -23,7 +23,7 @@ function capitalizeFirstLetter(string:string) {
 // }
 
 const checkCartItems = (item:Product,cartItems:Product[])=>{
-    return cartItems.some(el=>el.id===item.id);
+    return cartItems.some(el=>el.id===item.id); // returns boolean value if product exists within cart
 }
 
 const getItemCountFromLocalStorage = () => {

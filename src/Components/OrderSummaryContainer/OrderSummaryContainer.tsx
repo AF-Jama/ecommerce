@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect, useReducer } from "react"
 import { Inter } from "next/font/google"
@@ -20,22 +20,23 @@ function accumulateCart(accumulate:number,currentValue:Product){
 const OrderSummaryContainer:React.FC = ()=>{
     const [orderTotal,setOrderTotal] = useState<number>(0.00);
     
-    useEffect(()=>{
-        const handleStorageChange = (event:StorageEvent)=>{
-            if(event.key==="cartItems"){
-                if(!event.newValue){
-                    setOrderTotal(0.00);
-                    return;
-                }
-
-                const updatedCart:Product[] = JSON.parse(event.newValue);
-        
-                const accumlatedCartPrice = updatedCart.reduce(accumulateCart,0); // returns accumulated price
-        
-                setOrderTotal(accumlatedCartPrice);
+    const handleStorageChange = (event:StorageEvent)=>{
+        if(event.key==="cartItems"){
+            if(!event.newValue){
+                setOrderTotal(0.00);
+                return;
             }
-            
+
+            const updatedCart:Product[] = JSON.parse(event.newValue);
+    
+            const accumlatedCartPrice = updatedCart.reduce(accumulateCart,0); // returns accumulated price
+    
+            setOrderTotal(accumlatedCartPrice);
         }
+        
+    } // handle storage change on storage event listener trigger
+    
+    useEffect(()=>{
 
         const cartItem = getItemCountFromLocalStorage();
 
@@ -67,7 +68,7 @@ const OrderSummaryContainer:React.FC = ()=>{
             <hr />
             <div className="flex justify-between">
                 <p className={`text-lg font-bold ${inter.className}`}>Order Total</p>
-                <p className="font-bold">${orderTotal}</p>
+                <p className="font-bold text-lg">${orderTotal}</p>
             </div>
 
             <Link href={`/store/confirmation`}>

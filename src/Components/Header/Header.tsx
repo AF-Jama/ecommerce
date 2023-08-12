@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
@@ -20,22 +20,23 @@ const Header = ()=>{
     const [cartItems,setCartItems] = useState<number>(0);
 
     console.log(visibility);
+    // console.log(window);
 
+    const handleStorageChange = (event: StorageEvent) => {
+        if (event.key === 'cartItems') {
+          if (!event.newValue) {
+            // If there is no new value, set cartItems to an empty array
+            setCartItems(0);
+            return;
+          }
+  
+          const cartItems: Product[] = JSON.parse(event.newValue);
+          setCartItems(cartItems.length);
+        }
+      }; // handle storage change on storage event listener trigger
     
     
     useEffect(()=>{
-        const handleStorageChange = (event: StorageEvent) => {
-            if (event.key === 'cartItems') {
-              if (!event.newValue) {
-                // If there is no new value, set cartItems to an empty array
-                setCartItems(0);
-                return;
-              }
-      
-              const cartItems: Product[] = JSON.parse(event.newValue);
-              setCartItems(cartItems.length);
-            }
-          };
         
         
         setCartItems(getItemCountFromLocalStorage().length);
@@ -43,7 +44,7 @@ const Header = ()=>{
         window.addEventListener("storage",handleStorageChange);
 
         return () => window.removeEventListener('storage', handleStorageChange);  
-    },[window.localStorage.getItem("cartItems")]);
+    },[]); // add dependency array (window.localStorage.getItem("cartItems"))
 
 
     return (

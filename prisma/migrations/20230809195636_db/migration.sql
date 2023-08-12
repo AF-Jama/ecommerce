@@ -1,13 +1,14 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `User` (
+    `id` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(50) NOT NULL,
+    `salt` VARCHAR(191) NOT NULL,
+    `passwd` VARCHAR(191) NOT NULL,
 
-  - The primary key for the `user` table will be changed. If it partially fails, the table could be left without primary key constraint.
-
-*/
--- AlterTable
-ALTER TABLE `user` DROP PRIMARY KEY,
-    MODIFY `id` VARCHAR(191) NOT NULL,
-    ADD PRIMARY KEY (`id`);
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Cart` (
@@ -22,11 +23,8 @@ CREATE TABLE `Cart` (
 CREATE TABLE `CartItems` (
     `itemId` INTEGER NOT NULL AUTO_INCREMENT,
     `cartId` VARCHAR(191) NOT NULL,
-    `category` VARCHAR(191) NOT NULL,
     `productId` INTEGER NOT NULL,
     `qauntity` INTEGER NOT NULL,
-    `price` DECIMAL(65, 30) NOT NULL,
-    `discount` DECIMAL(65, 30) NOT NULL DEFAULT 0.00,
 
     UNIQUE INDEX `CartItems_cartId_key`(`cartId`),
     PRIMARY KEY (`itemId`)
