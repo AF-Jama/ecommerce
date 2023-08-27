@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import Link from "next/link";
+import { destroyCookie } from 'nookies';
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
 import cartContext from "@/Contexts/CartContext/CartContext";
 import Logo from '../../assets/images/logo.svg';
 import cart from '../../assets/images/cart.png';
@@ -13,11 +15,16 @@ import styles from '../../styles/header.module.css';
 import { getItemCountFromLocalStorage } from "@/utils/utils";
 import { Product } from "@/types/types";
 
-const Header = ()=>{
+interface Props{
+    authState:boolean
+}
+
+const Header:React.FC<Props> = ({ authState  })=>{
     const [loginState,setLoginState] = useState(true); // set login state
     const [visibility,setVisibility] = useState(false);
     const { addState, setAddCartState } = useContext(cartContext);
     const [cartItems,setCartItems] = useState<number>(0);
+    const router = useRouter();
 
     console.log(visibility);
     // console.log(window);
@@ -34,28 +41,28 @@ const Header = ()=>{
           setCartItems(cartItems.length);
         }
       }; // handle storage change on storage event listener trigger
-    
-    
-    useEffect(()=>{
-        
-        
-        setCartItems(getItemCountFromLocalStorage().length);
 
-        window.addEventListener("storage",handleStorageChange);
+    const onLogout = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+        e.preventDefault();
 
-        return () => window.removeEventListener('storage', handleStorageChange);  
-    },[]); // add dependency array (window.localStorage.getItem("cartItems"))
+        await fetch('/api/logout',{
+            method:"POST"
+        })
+
+        router.push('/login');
+
+    }
 
 
     return (
         <header className="min-h-[2vh]">
             <div id="header-inner-container" className="w-[95%] max-w-6xl mx-auto flex justify-between items-center p-2">
 
-                <div id="b-btn-container" className={visibility?styles.change:styles.container} onClick={()=>setVisibility(!visibility)}>
+                {/* <div id="b-btn-container" className={visibility?styles.change:styles.container} onClick={()=>setVisibility(!visibility)}>
                     <div className={styles.bar}></div>
                     <div className={styles.bar}></div>
                     <div className={styles.bar}></div>
-                </div>
+                </div> */}
 
                 <Link href={`/store/home`}>
                     <div id="logo-image-container">
@@ -70,11 +77,9 @@ const Header = ()=>{
                     </div>
                 </Link>
 
-                {/* <div id="auth-btn">
-                    {
-                        loginState?<Button colorScheme='green' className="bg-red-500 rounded-md">Logout</Button>:<Button colorScheme='green' className="bg-purple-600 rounded-md">Login</Button>
-                    }
-                </div> */}
+                <div id="auth-btn"> 
+                    <Button colorScheme='green' className="bg-red-500 rounded-md" onClick={onLogout}>Logout</Button>
+                </div>
 
             </div>
         </header>

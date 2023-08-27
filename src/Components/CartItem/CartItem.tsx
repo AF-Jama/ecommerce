@@ -18,57 +18,65 @@ const roboto = Roboto({
 })
 
 interface Props{
-
+    id:number,
+    title:string,
+    price:number,
+    category:string,
+    description:string,
+    image:string,
+    quantity:number,
+    refetch:any,
 }
 
 
-const CartItem:React.FC<Product> = (product)=>{
+const CartItem:React.FC<Props> = ({ id, category, description, image, price, title, quantity, refetch })=>{
 
-    const onDeleteItem = (id:number)=>{
+    const onDeleteItem = async (e:React.MouseEvent<HTMLImageElement, MouseEvent>)=>{
+        e.preventDefault();
 
-        const cartItem = getItemCountFromLocalStorage(); // returns cart items
-
-        if(cartItem.length===0) return;
-
-        let cartItemIndex = cartItem.findIndex(item=>{
-            if(item.id===id) return true;
-
-            return false;
+        let res = await fetch('/api/cart/remove',{
+            body:JSON.stringify({
+                id:id
+            }),
+            method:"POST"
         })
 
-        if(cartItemIndex===-1) return;
+        let ress = await res.json() as {
+            message:string,
+            statusCode:number,
+        };
 
-        cartItem.splice(cartItemIndex,1);
+        if(ress.statusCode===201){
+            refetch();
+            return;
+        }
 
-        // console.log(cartItem);
+        console.log("CANNOT DELETE ITEM");
 
-        window.localStorage.setItem("cartItems",JSON.stringify(cartItem));
 
-        
     }
-
-
 
 
 
     return (
         <div id="cart-item-container" className="flex items-center">
             <div id="prod-image-container" className="h-12 w-12 md:h-14 md:w-14 rounded-md">
-                <Image src={product.image} alt="" className="h-full w-full object-cover" width={500} height={500}/>
+                <Image src={image} alt="" className="h-full w-full object-contain" width={500} height={500}/>
             </div>
 
             <div id="prod-info-container" className="flex-1 ml-2 relative">
                 <div className="p-2 grid sm:grid sm:grid-col-2">
-                    <Link href={`/store/product/${product.id}`}>
-                        <p className={`${roboto.className} text-base`}>{product.title}</p>
+                    <Link href={`/store/product/${id}`}>
+                        <p className={`${roboto.className} text-base`}>{title}</p>
                     </Link>
-                    <p className="text-sm">{product.category}</p>
-                    <p className="font-bold text-sm">${product.price}</p>
+                    <p className="text-sm">{category}</p>
+                    <p className="font-bold text-sm">${price}</p>
+                    <p className="text-sm font-bold">Quantity: {quantity}</p>
                 </div>
 
-                <div id="remove-btn-container" className="absolute right-0 top-0">
-                    <button className={`p-2 rounded-full`} onClick={e=>onDeleteItem(product.id)}>
-                        <Image src={xMark} className="h-4 w-4" alt=""/>
+                <div id="remove-btn-container" className="absolute right-0 bottom-0">
+                    <button className={`p-2 rounded-full`}>
+                        <Image src={xMark} className="h-4 w-4" onClick={onDeleteItem} alt=""/>
                     </button>
                 </div>
             </div>

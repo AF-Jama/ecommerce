@@ -1,35 +1,39 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import client from '../redis/client';
 import * as jwt from 'jsonwebtoken';
 import { Token } from './types/types';
 import { string } from 'zod';
+import { redirect } from 'next/dist/server/api-utils';
  
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     const isPublicPath = path==='/login' || path==='/signup'
 
-    const accessToken = request.cookies.get('AT')?.value || ''; // returns access token if exists or returns empty string
+    const sessionId = request.cookies.get('sid')?.value || ''; // returns access token if exists or returns empty string
 
-    if(isPublicPath && accessToken){
+    const isSessionExist = await client.exists(`session:${sessionId}`); // returns boolean if session exists
+
+    if(isPublicPath && isSessionExist){
         // triggered if path is public and access token exists
-        return NextResponse.redirect(new URL('/store/home', request.url))
+        return NextResponse.redirect(new URL('/store/home', request.url));
     }
 
-    if(path==="/"){
-        return NextResponse.redirect(new URL('/store/home', request.url))
+    if(path==='/'){
+        return NextResponse.redirect(new URL('/store/home', request.url));
     }
 
-    if(path.startsWith('/api') && !accessToken){
-        // triggered if endpoint is starts with '/api' and no access token exists
+    if(path.startsWith('/api') && !isSessionExist){
+        // triggered if endpoint is starts with '/api' and no session id exists
         return NextResponse.json({
-            message:"Access token is required",
+            message:"Valid session id is required",
             statusCode:401
         })
     }
 
-    if(!isPublicPath && !accessToken){
+    if(!isPublicPath && !isSessionExist){
         // triggered path is private (not public) and no access token
         return NextResponse.redirect(new URL('/login', request.url));
     }

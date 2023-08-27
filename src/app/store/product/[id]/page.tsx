@@ -8,6 +8,7 @@ import { notFound } from "next/navigation"
 import styles from '../../../../styles/global.module.css';
 import { Roboto, Urbanist, Inter } from 'next/font/google' 
 import { capitalizeFirstLetter } from "@/utils/utils";
+import { cookies } from "next/headers";
 
 const roboto = Roboto({
   weight: '400',
@@ -46,6 +47,8 @@ const getData = async (id:string):Promise<Product|null>=>{
 
 const Page:React.FC<Props> = async ({ params }: { params: { id:string } })=>{
 
+    const sid = cookies().get('sid')?.value || ''; // returns sid or empty string
+
     const data = await getData(params.id);
 
     if(!data){
@@ -69,7 +72,7 @@ const Page:React.FC<Props> = async ({ params }: { params: { id:string } })=>{
                     <p className={`font-bold ${inter.className}`}>Category: <span className={`font-normal ${inter.className}`}>{capitalizeFirstLetter(data.category)}</span></p>
 
                     <div id="cart-btn">
-                        <CartButton productData={data}/>
+                        <CartButton title={data.title} sessionId={sid} id={data.id}/>
                     </div>
                 </div>
             </div>

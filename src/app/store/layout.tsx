@@ -1,10 +1,23 @@
+"use client";
+
 import React from "react";
 import * as jwt from 'jsonwebtoken';
+import { ChakraProvider } from "@chakra-ui/react";
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+  } from '@tanstack/react-query';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Header from "@/Components/Header/Header";
 import AddItem from "@/Components/AddItem/AddItem";
 import ErrorItem from "@/Components/ErrorItem/ErrorItem";
+
+
+const queryClient = new QueryClient();
 
 
 export default async function StoreLayout({
@@ -30,10 +43,14 @@ export default async function StoreLayout({
 
     return (
         <>
-            <Header/>
+            <Header authState={true}/>
 
             <main className="w-[95%] max-w-6xl mx-auto">
-                {children}
+                <ChakraProvider>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </ChakraProvider>
             </main>
 
             <AddItem/>
