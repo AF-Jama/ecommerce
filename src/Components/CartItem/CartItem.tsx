@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useContext } from "react";
+import cartContext from "@/Contexts/CartContext/CartContext";
 import product from '../../assets/images/logo.svg';
 import Link from "next/link";
 import { Roboto } from "next/font/google";
@@ -31,6 +32,9 @@ interface Props{
 
 const CartItem:React.FC<Props> = ({ id, category, description, image, price, title, quantity, refetch })=>{
 
+    const { deleteState, setDeleteState } = useContext(cartContext);
+
+
     const onDeleteItem = async (e:React.MouseEvent<HTMLImageElement, MouseEvent>)=>{
         e.preventDefault();
 
@@ -47,6 +51,7 @@ const CartItem:React.FC<Props> = ({ id, category, description, image, price, tit
         };
 
         if(ress.statusCode===201){
+            setDeleteState(true);
             refetch();
             return;
         }

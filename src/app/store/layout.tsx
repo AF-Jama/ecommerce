@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import * as jwt from 'jsonwebtoken';
 import { ChakraProvider } from "@chakra-ui/react";
@@ -15,6 +13,7 @@ import { redirect } from "next/navigation";
 import Header from "@/Components/Header/Header";
 import AddItem from "@/Components/AddItem/AddItem";
 import ErrorItem from "@/Components/ErrorItem/ErrorItem";
+import DeleteItem from "@/Components/DeleteItem/DeleteItem";
 
 
 const queryClient = new QueryClient();
@@ -40,21 +39,20 @@ export default async function StoreLayout({
     //     }
     // });
 
+    const sid = cookies().get('sid')?.value || ''; // returns sid or empty string
+
 
     return (
         <>
-            <Header authState={true}/>
+            <Header authState={true} sessionId={sid}/>
 
             <main className="w-[95%] max-w-6xl mx-auto">
-                <ChakraProvider>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                </ChakraProvider>
+                {children}
             </main>
 
             <AddItem/>
             <ErrorItem message="Product already in cart"/>
+            <DeleteItem/>
         </>   
     )
 }

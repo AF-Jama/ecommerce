@@ -50,7 +50,7 @@ const OrderSummaryContainer:React.FC = ()=>{
         setOrderTotal(accumlatedCartPrice);
 
         
-        window.addEventListener("storage",handleStorageChange);
+        window.addEventListener("storage",handleStorageChange); 
 
 
 

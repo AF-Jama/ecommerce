@@ -33,6 +33,13 @@
     margin: 0 0.8rem;
 }
 
+.deleteItem::before{
+    content: url('../assets/images/delete-mark.png');
+    vertical-align: middle;
+    margin: 0 0.8rem;
+
+}
+
 .errorItem::before{
     content: url('../assets/images/red-x-mark.png');
     vertical-align: middle;

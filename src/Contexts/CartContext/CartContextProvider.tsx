@@ -7,6 +7,7 @@ import cartContext from "./CartContext";
 const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
     const [addState, setAddState] = useState(false); // set add state 
     const [errorState,setErrorState] = useState(false); // set error state
+    const [deleteState,setDeleteState] = useState(false); // set delete state
     
 
 
@@ -22,7 +23,13 @@ const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
                 setErrorState(false);
             },3000)
         }
-    },[addState,errorState]);
+
+        if(deleteState){
+            setTimeout(()=>{
+                setDeleteState(false);
+            },3000)
+        }
+    },[addState,errorState,deleteState]);
 
 
 
@@ -33,7 +40,9 @@ const CartContextProvider = ({ children } : { children: React.ReactNode })=>{
             addState:addState,
             setAddCartState:setAddState,
             errorState:errorState,
-            setErrorState:setErrorState
+            setErrorState:setErrorState,
+            deleteState:deleteState,
+            setDeleteState:setDeleteState,
         }}>
             {children}
         </cartContext.Provider>

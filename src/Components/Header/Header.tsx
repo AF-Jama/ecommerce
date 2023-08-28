@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import Link from "next/link";
-import { destroyCookie } from 'nookies';
+import Cookies from 'js-cookie';
+import { parseCookies,destroyCookie } from 'nookies';
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import cartContext from "@/Contexts/CartContext/CartContext";
@@ -16,13 +17,14 @@ import { getItemCountFromLocalStorage } from "@/utils/utils";
 import { Product } from "@/types/types";
 
 interface Props{
-    authState:boolean
+    authState:boolean,
+    sessionId:string,
 }
 
-const Header:React.FC<Props> = ({ authState  })=>{
+const Header:React.FC<Props> = ({ authState, sessionId  })=>{
     const [loginState,setLoginState] = useState(true); // set login state
     const [visibility,setVisibility] = useState(false);
-    const { addState, setAddCartState } = useContext(cartContext);
+    const { addState, setAddCartState, deleteState } = useContext(cartContext);
     const [cartItems,setCartItems] = useState<number>(0);
     const router = useRouter();
 
@@ -52,6 +54,20 @@ const Header:React.FC<Props> = ({ authState  })=>{
         router.push('/login');
 
     }
+
+
+    useEffect(()=>{
+        const fetchCart = async ()=>{
+            let res = await fetch(`/api/cart/all`);
+
+            let ress = await res.json() as Array<any>;
+
+            setCartItems(ress.length);
+        }
+
+        fetchCart();
+        
+    },[addState,deleteState]);
 
 
     return (
